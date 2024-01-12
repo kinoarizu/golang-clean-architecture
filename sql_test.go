@@ -169,13 +169,13 @@ func TestAutoIncrement(t *testing.T) {
 	defer db.Close()
 
 	ctx := context.Background()
-	script := "INSERT INTO comment_golang(email, comment) VALUES($1, $2)"
+	script := "INSERT INTO comments(email, comment) VALUES($1, $2)"
 	_, err := db.ExecContext(ctx, script)
 	if err != nil {
 		panic(err)
 	}
 	// postgres not supported :(
-	// insertId, err := result.LastInsertId() 
+	// insertId, err := result.LastInsertId()
 	// if err != nil {
 	// 	panic(err)
 	// }
@@ -188,7 +188,7 @@ func TestPrepareStatement(t *testing.T) {
 	defer db.Close()
 
 	ctx := context.Background()
-	script := "INSERT INTO comment_golang(email, comment) VALUES($1, $2)"
+	script := "INSERT INTO comments(email, comment) VALUES($1, $2)"
 	statement, err := db.PrepareContext(ctx, script)
 	if err != nil {
 		panic(err)
@@ -198,12 +198,12 @@ func TestPrepareStatement(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		email := "eko" + strconv.Itoa(i) + "@gmail.com"
 		comment := "Komentar ke " + strconv.Itoa(i)
-	
+
 		_, err := statement.ExecContext(ctx, email, comment)
 		if err != nil {
 			panic(err)
 		}
-		
+
 		// postgres not supported :(
 		// id, err := result.LastInsertId()
 		// if err != nil {
@@ -212,7 +212,6 @@ func TestPrepareStatement(t *testing.T) {
 		// fmt.Println("Comment Id", id)
 	}
 }
-
 
 func TestTransaction(t *testing.T) {
 	db := GetConnection()
@@ -223,17 +222,17 @@ func TestTransaction(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	
-	script := "INSERT INTO comment_golang(email, comment) VALUES($1, $2)"
+
+	script := "INSERT INTO comments(email, comment) VALUES($1, $2)"
 	for i := 0; i < 10; i++ {
 		email := "eko" + strconv.Itoa(i) + "@gmail.com"
 		comment := "Komentar ke " + strconv.Itoa(i)
-	
+
 		_, err := tx.ExecContext(ctx, script, email, comment)
 		if err != nil {
 			panic(err)
 		}
-		
+
 		// postgres not supported :(
 		// id, err := result.LastInsertId()
 		// if err != nil {

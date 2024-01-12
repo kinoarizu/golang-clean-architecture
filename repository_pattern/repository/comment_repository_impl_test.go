@@ -15,7 +15,7 @@ func TestCommentInsert(t *testing.T) {
 
 	ctx := context.Background()
 	comment := entity.Comment{
-		Email: "repository@test.com",
+		Email:   "repository@test.com",
 		Comment: "Test Repository",
 	}
 

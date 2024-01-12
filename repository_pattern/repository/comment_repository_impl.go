@@ -16,8 +16,8 @@ func NewCommentRepository(db *sql.DB) CommentRepostitory {
 	return &commentRepositoryImpl{DB: db}
 }
 
-func(repository *commentRepositoryImpl) Insert(ctx context.Context, comment entity.Comment) (entity.Comment, error) {
-	script := "INSERT INTO comment_golang(email, comment) VALUES ($1, $2)"
+func (repository *commentRepositoryImpl) Insert(ctx context.Context, comment entity.Comment) (entity.Comment, error) {
+	script := "INSERT INTO comments(email, comment) VALUES ($1, $2)"
 	_, err := repository.DB.ExecContext(ctx, script, comment.Email, comment.Comment)
 	if err != nil {
 		return comment, err
@@ -31,8 +31,8 @@ func(repository *commentRepositoryImpl) Insert(ctx context.Context, comment enti
 	return comment, nil
 }
 
-func(repository *commentRepositoryImpl) FindById(ctx context.Context, id int32) (entity.Comment, error) {
-	script := "SELECT id, email, comment FROM comment_golang WHERE id = $1 LIMIT 1"
+func (repository *commentRepositoryImpl) FindById(ctx context.Context, id int32) (entity.Comment, error) {
+	script := "SELECT id, email, comment FROM comments WHERE id = $1 LIMIT 1"
 	rows, err := repository.DB.QueryContext(ctx, script, id)
 	comment := entity.Comment{}
 	if err != nil {
@@ -47,8 +47,8 @@ func(repository *commentRepositoryImpl) FindById(ctx context.Context, id int32) 
 	}
 }
 
-func(repository *commentRepositoryImpl) FindAll(ctx context.Context) ([]entity.Comment, error) {
-	script := "SELECT id, email, comment FROM comment_golang"
+func (repository *commentRepositoryImpl) FindAll(ctx context.Context) ([]entity.Comment, error) {
+	script := "SELECT id, email, comment FROM comments"
 	rows, err := repository.DB.QueryContext(ctx, script)
 	if err != nil {
 		return nil, err
